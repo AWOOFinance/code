@@ -24,8 +24,8 @@ contract AwooFinance is Context, IERC20, IERC20Metadata, Ownable {
 
     uint256 private _totalSupply = 1000000000000 * 10**18;
 
-    string private _name = "AT Finance";
-    string private _symbol = "AT";
+    string private _name = "AWOO Finance";
+    string private _symbol = "AWOO";
 
     mapping(address => bool) private _isExcludedFromFee;
 
