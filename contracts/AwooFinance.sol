@@ -49,7 +49,7 @@ contract AwooFinance is Context, IERC20, IERC20Metadata, Ownable {
     bool public swapEnabled = true;
 
     uint256 totalHolders;
-    uint256 private _maxTxAmount = 1000000000000e18;
+    uint256 private _maxTxAmount = 1000000000e18;
     // Set a minimum amount of tokens to be swapped to avoid waste => 50000
     uint256 private _numOfTokensToExchangeForCharity = 5 * 10**4 * 10**18;
 
@@ -701,8 +701,8 @@ contract AwooFinance is Context, IERC20, IERC20Metadata, Ownable {
 
     function _setMaxTxAmount(uint256 maxTxAmount) external onlyOwner {
         require(
-            maxTxAmount >= 1000000000000e18,
-            "maxTxAmount should be greater than 1000000000000e18"
+            maxTxAmount >= 1000000000e18,
+            "maxTxAmount should be greater than 1000000000e18"
         );
         _maxTxAmount = maxTxAmount;
     }
