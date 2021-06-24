@@ -55,14 +55,12 @@ contract DogNFT is ERC721, Ownable {
         boostFee[to] = boostFee[to].add(10);
         _totalBoosts = _totalBoosts.add(10);
 
-        uint256 randomEvolution =
-            uint256(
-                keccak256(abi.encodePacked(block.difficulty, block.timestamp))
-            )
-                .mod(100)
-                .add(10)
-                .div(10)
-                .mul(10);
+        uint256 randomEvolution = uint256(
+            keccak256(abi.encodePacked(block.difficulty, block.timestamp))
+        ).mod(100)
+        .add(10)
+        .div(10)
+        .mul(10);
 
         tokenEvolution[tokenId] = randomEvolution;
     }
@@ -129,6 +127,7 @@ contract DogNFT is ERC721, Ownable {
                 if (boosters[i] == from) {
                     boosters[i] = boosters[boosters.length - 1];
                     boosters.pop();
+                    _totalBoosters = _totalBoosters.sub(1);
                     break;
                 }
             }
@@ -137,6 +136,7 @@ contract DogNFT is ERC721, Ownable {
         boostFee[to] = boostFee[to].add(tokenBoost);
         if (boostFee[to] == tokenBoost) {
             boosters.push(to);
+            _totalBoosters = _totalBoosters.add(1);
         }
     }
 }

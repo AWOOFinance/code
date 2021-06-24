@@ -73,11 +73,12 @@ contract AwooFinance is Context, IERC20, IERC20Metadata, Ownable {
         _balances[_msgSender()] = _totalSupply;
         totalHolders = 1;
 
-        IUniswapV2Router02 _uniswapV2Router =
-            IUniswapV2Router02(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D); // UniswapV2 for Ethereum network
+        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(
+            0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
+        ); // UniswapV2 for Ethereum network
         // Create a uniswap pair for this new token
         uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
-            .createPair(address(this), _uniswapV2Router.WETH());
+        .createPair(address(this), _uniswapV2Router.WETH());
 
         // set the rest of the contract variables
         uniswapV2Router = _uniswapV2Router;
@@ -131,10 +132,10 @@ contract AwooFinance is Context, IERC20, IERC20Metadata, Ownable {
     }
 
     function calculatedSupply() public view returns (uint256) {
-        uint256 nonHolderSupply =
-            _totalSupply.sub(_totalFee).sub(_balances[address(this)]).sub(
-                _balances[uniswapV2Pair]
-            );
+        uint256 nonHolderSupply = _totalSupply
+        .sub(_totalFee)
+        .sub(_balances[address(this)])
+        .sub(_balances[uniswapV2Pair]);
 
         uint256 cSupply;
 
@@ -151,13 +152,12 @@ contract AwooFinance is Context, IERC20, IERC20Metadata, Ownable {
 
         cSupply = cSupply.add(
             nonHolderSupply
-                .mul(
+            .mul(
                 100 -
                     _dogNFT.totalBoosts().mul(10**6).div(totalHolders).div(
                         10**6
                     )
-            )
-                .div(100)
+            ).div(100)
         );
 
         return cSupply;
@@ -461,8 +461,12 @@ contract AwooFinance is Context, IERC20, IERC20Metadata, Ownable {
             _balances[sender] = _balances[sender].sub(amount);
         }
 
-        (uint256 tTransferAmount, uint256 tFee, uint256 tCharity, uint256 tOp) =
-            _getTValues(amount, _taxFee, _charityFee, _opFee);
+        (
+            uint256 tTransferAmount,
+            uint256 tFee,
+            uint256 tCharity,
+            uint256 tOp
+        ) = _getTValues(amount, _taxFee, _charityFee, _opFee);
 
         if (_balances[sender] == 0) totalHolders = totalHolders.sub(1);
         if (tTransferAmount > 0 && _balances[recipient] == 0)
@@ -521,8 +525,8 @@ contract AwooFinance is Context, IERC20, IERC20Metadata, Ownable {
             contractTokenBalance = _maxTxAmount;
         }
 
-        bool overMinTokenBalance =
-            contractTokenBalance >= _numOfTokensToExchangeForCharity;
+        bool overMinTokenBalance = contractTokenBalance >=
+            _numOfTokensToExchangeForCharity;
         if (
             !inSwap &&
             swapEnabled &&
